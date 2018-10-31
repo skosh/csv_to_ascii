@@ -1,6 +1,6 @@
 require 'csv'
 require 'pry'
-require_relative 'ascii_table'
+require 'terminal-table'
 require_relative 'converters/integer'
 require_relative 'converters/string'
 require_relative 'converters/money'
@@ -20,7 +20,7 @@ class CsvToAscii
 
   def convert
     csv_io = CSV.open(@file_name, headers: :true, converters: [converter], col_sep: ';')
-    ascii_table = AsciiTable.new
+    ascii_table = Terminal::Table.new(style: { all_separators: true })
 
     csv_io.each do |row_with_headers|
       row = row_with_headers.map(&:last)
