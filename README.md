@@ -40,7 +40,7 @@ int;string;money
 
 ### Usage:
 ```
-require 'csv_to_ascii'
+require 'ascii_converter'
 
-CsvToAscii.new('test_file.csv').convert
+AsciiConverter.new(file: 'test_file.csv', parser: :csv)
 ```

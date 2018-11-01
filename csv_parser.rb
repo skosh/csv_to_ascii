@@ -1,9 +1,7 @@
 require 'csv'
-require 'pry'
-require_relative 'ascii_table'
 require_relative 'converter'
 
-class CsvToAscii
+class CsvParser
   ALIGNMENT_MAPPING = { 'int' => :right, 'money' => :right }
   CONVERTER_MAPPING = {
     'int' => Converter::Integer,
@@ -15,18 +13,14 @@ class CsvToAscii
     @file_name = file_name
   end
 
-  def convert
-    csv_io = CSV.open(@file_name, headers: :true, converters: [converter], col_sep: ';')
-    ascii_table = AsciiTable.new
-
-    csv_io.each do |row_with_headers|
+  def each
+    io = CSV.open(@file_name, headers: :true, converters: [converter], col_sep: ';')
+    io.each do |row_with_headers|
       row = row_with_headers.map(&:last)
-      ascii_table.add_row(row)
+      yield(row)
     end
-
-    puts ascii_table
   ensure
-    csv_io.close if csv_io
+    io.close if io
   end
 
   private
